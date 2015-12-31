@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+
+   <extension
+         point="org.eclipse.ui.actionSets">
+      <actionSet
+            label="QR CODE"
+            visible="true"
+            id="qrcode.actionSet">
+         <menu
+               label="Diy"
+               id="sampleMenu">
+            <separator
+                  name="sampleGroup">
+            </separator>
+         </menu>
+         <action
+               label="QR CODE"
+               icon="icons/sample.gif"
+               class="qrcode.actions.QrAction"
+               tooltip="QR CODE"
+               menubarPath="sampleMenu/sampleGroup"
+               toolbarPath="sampleGroup"
+               id="qrcode.actions.QrAction">
+         </action>
+      </actionSet>
+   </extension>
+
+</plugin>
