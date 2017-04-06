@@ -1,4 +1,4 @@
-package cn.px.qr;
+package com.chicootec.qr;
 
 import java.awt.Image;
 import java.awt.image.BufferedImage;
@@ -16,7 +16,7 @@ import com.google.zxing.qrcode.QRCodeWriter;
 
 public final class Creator {
   private Creator(){
-    throw new AssertionError("not support...");
+    throw new AssertionError();
   }
 
   private static final int BLACK = 0xFF000000;
@@ -74,6 +74,7 @@ public final class Creator {
     BitMatrix bitMatrix = null;
     try {
       bitMatrix = writer.encode(content, BarcodeFormat.QR_CODE, width, height, hints);
+//      bitMatrix = writer.encode(content, BarcodeFormat.CODABAR, width, height, hints);
     } catch (Exception e) {
 
     }

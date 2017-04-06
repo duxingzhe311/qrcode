@@ -1,4 +1,4 @@
-package cn.px.qr;
+package com.chicootec.qr;
 
 import java.io.Closeable;
 import java.io.File;

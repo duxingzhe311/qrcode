@@ -6,7 +6,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.IWorkbenchWindowActionDelegate;
 
-import cn.px.qr.QrFrame;
+import com.chicootec.qr.QrFrame;
 
 /**
  * Our sample action implements workbench action delegate.
