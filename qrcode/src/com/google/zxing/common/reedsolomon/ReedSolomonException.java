@@ -13,19 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.google.zxing.common.reedsolomon;
 
 /**
- * <p>
- * Thrown when an exception occurs during Reed-Solomon decoding, such as when
+ * <p>Thrown when an exception occurs during Reed-Solomon decoding, such as when
  * there are too many errors to correct.</p>
  *
  * @author Sean Owen
  */
 public final class ReedSolomonException extends Exception {
 
-    public ReedSolomonException(String message) {
-        super(message);
-    }
+  public ReedSolomonException(String message) {
+    super(message);
+  }
 
 }

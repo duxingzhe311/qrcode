@@ -11,6 +11,7 @@ import javax.imageio.ImageIO;
 
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.EncodeHintType;
+import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
 
@@ -58,8 +59,14 @@ public final class Creator {
     }
   }
 
-
+  public static BitMatrix createBitMatrixBar(String content, int width, int height) {
+    return createBitMatrix0(content,width,height,true);
+  }
   public static BitMatrix createBitMatrix(String content, int width, int height) {
+    return createBitMatrix0(content,width,height,false);
+  }
+
+  private static BitMatrix createBitMatrix0(String content, int width, int height,boolean bar) {
     if (width < 1)
       width = 800;
     if (height < 1)
@@ -73,10 +80,12 @@ public final class Creator {
     QRCodeWriter writer = new QRCodeWriter();
     BitMatrix bitMatrix = null;
     try {
-      bitMatrix = writer.encode(content, BarcodeFormat.QR_CODE, width, height, hints);
-//      bitMatrix = writer.encode(content, BarcodeFormat.CODABAR, width, height, hints);
+      if(bar){
+        bitMatrix = new MultiFormatWriter().encode(content, BarcodeFormat.CODE_128, width, height, hints);
+      }else{
+        bitMatrix = writer.encode(content, BarcodeFormat.QR_CODE, width, height, hints);
+      }
     } catch (Exception e) {
-
     }
     return bitMatrix;
   }
@@ -93,8 +102,28 @@ public final class Creator {
     return null;
   }
   
+  public static Image createBar(String content, File file, int width,int height){
+    BitMatrix bitMatrix = createBitMatrixBar(content, width, height);
+    if(null == bitMatrix){
+      return null;
+    }
+    try {
+      Image img = toBufferedImage(bitMatrix);
+      if (null != file) {
+        writeToFile(bitMatrix, "jpg", file);
+      }
+      return img;
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+    return null;
+  }
+  
   public static Image create(String content, File file, int width,int height){
     BitMatrix bitMatrix = createBitMatrix(content, width, height);
+    if(null == bitMatrix){
+      return null;
+    }
     try {
       Image img = toBufferedImage(bitMatrix);
       if (null != file) {

@@ -25,6 +25,7 @@ public class QrFrame {
   private static final int HEIGHT = 600;
 
   private Image backImg = null;
+  private Image backImgBar = null;
 
   private Shell shell;
   private Shell window;
@@ -35,6 +36,7 @@ public class QrFrame {
   private Button btnClear;
 
   private Label labImg;
+  private Label labImgBar;
   private Label diyLab;
 
   private Text textDiy;
@@ -46,6 +48,7 @@ public class QrFrame {
     this.display = shell.getDisplay();
     
     backImg = new Image(display, QrFrame.class.getResourceAsStream("/bg.jpg"));
+    backImgBar = new Image(display, QrFrame.class.getResourceAsStream("/bg_bar.jpg"));
 
     Rectangle rect = window.getBounds();
     this.shell.setBounds(rect.width / 5 - 30, rect.height / 5 - 50, WIDTH, HEIGHT);
@@ -55,13 +58,17 @@ public class QrFrame {
     GridLayout gridLayout = new GridLayout();
 
     gridLayout.numColumns = 2;
-    gridLayout.verticalSpacing = 8;
+    gridLayout.verticalSpacing = 6;
 
     shell.setLayout(gridLayout);
     
-    labImg = new Label(shell, SWT.CENTER);
+    labImg = new Label(shell, SWT.FILL);
     labImg.setImage(backImg);
-    labImg.setLayoutData(new GridData(SWT.FILL, SWT.MIN, true, false, 2, 1));
+    labImg.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false,2,1));
+    
+    labImgBar = new Label(shell, SWT.FILL);
+    labImgBar.setImage(backImgBar);
+    labImgBar.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false,2,1));
 
     diyLab = new Label(shell, SWT.LEFT);
     diyLab.setText("内容");
@@ -82,18 +89,27 @@ public class QrFrame {
           MessageDialog.openInformation(shell, "失败", "请先输入内容");
           return;
         }
+        InputStream is = null;
         try{
           File file = File.createTempFile("tmp_qr_" + System.currentTimeMillis(), "jpg");
-          
           Creator.create(content,file,300,300);
-          InputStream is = new FileInputStream(file);
+          is = new FileInputStream(file);
           Image image = new Image(display, is);
           labImg.setImage(image);
-          
-          close(is);
         }catch(Exception e){
-          MessageDialog.openInformation(shell, "失败", "失败：" + e.getMessage());
+          labImg.setImage(backImg);
         }
+        try{
+          File file = File.createTempFile("tmp_bar_" + System.currentTimeMillis(), "jpg");
+          
+          Creator.createBar(content,file,300,100);
+          is = new FileInputStream(file);
+          Image image = new Image(display, is);
+          labImgBar.setImage(image);
+        }catch(Exception e){
+          labImgBar.setImage(backImgBar);
+        }
+        close(is);
       }
     });
     
@@ -105,16 +121,11 @@ public class QrFrame {
       public void widgetSelected(SelectionEvent event) {
         textDiy.setText("");
         labImg.setImage(backImg);
+        labImgBar.setImage(backImgBar);
       }
     });
     
     shell.open();
-
-//    while (!shell.isDisposed()) {
-//      if (!display.readAndDispatch())
-//        display.sleep();
-//    }
-//    display.dispose();
   }
   
   
